@@ -95,7 +95,7 @@ def login():
             cursor = conn.cursor()
             cursor.execute(
                 "SELECT user_id, username, password FROM users WHERE username = %s",
-                (username,)
+                (username)
             )
             user = cursor.fetchone()
             conn.close()
@@ -103,12 +103,7 @@ def login():
             if user and user['password'] == password:
                 session['user_id'] = user['user_id']  # Store user_id instead of username
                 session['username'] = user['username']
-                conn = get_db_connection()
-                cursor = conn.cursor()
-                cursor.execute("SELECT * FROM listings")
-                results = cursor.fetchall()
-                conn.close()
-                return render_template('home.html', listings=results)
+                return render_template('index.html', sections=SECTIONS)
 
             return render_template('index.html', error="Invalid username or password")
         except pymysql.Error as e:
@@ -342,7 +337,7 @@ def create_listing(section, category):
         return redirect(url_for('login'))
 
     # Convert URL parameter to match SECTIONS keys (capitalized, no hyphens)
-    section_key = section.title().replace('-', '')
+    section_key = section
     
     if section_key not in SECTIONS or category not in SECTIONS[section_key]:
         abort(404)
