@@ -7,11 +7,11 @@ app = Flask(__name__, static_url_path='/static', static_folder='static')
 app.secret_key = 'your-secret-key-here'  # Required for session management
 
 # Google Cloud SQL configuration
-DB_USER = "root"
-DB_PASSWORD = "se422"
-DB_NAME = "photo_gallery"
-DB_CONNECTION_NAME = "coms4220final:us-central1:photo-gallery-db"
-
+DB_USER = "galleryuser"
+DB_PASSWORD = "root"
+DB_NAME = "photogallery"
+DB_CONNECTION_NAME = "finalexam-459723:us-central1:mysql-db"
+DB_HOST              = os.environ.get("DB_HOST", "<PUBLIC_IP>")
 
 # Sections & Categories
 SECTIONS = {
@@ -30,26 +30,14 @@ def inject_sections():
 # DB connection
 def get_db_connection():
     try:
-        if os.path.exists(f"/cloudsql/{DB_CONNECTION_NAME}"):
-            # Use Unix socket if available
-            return pymysql.connect(
-                unix_socket=f"/cloudsql/{DB_CONNECTION_NAME}",
-                user=DB_USER,
-                password=DB_PASSWORD,
-                db=DB_NAME,
-                charset='utf8mb4',
-                cursorclass=pymysql.cursors.DictCursor
-            )
-        else:
-            # Fallback to private IP (from `gcloud sql instances describe`)
-            return pymysql.connect(
-                host="10.19.0.3",
-                user=DB_USER,
-                password=DB_PASSWORD,
-                db=DB_NAME,
-                charset='utf8mb4',
-                cursorclass=pymysql.cursors.DictCursor
-            )
+        return pymysql.connect(
+            host=DB_HOST,
+            user=DB_USER,
+            password=DB_PASSWORD,
+            db=DB_NAME,
+            charset='utf8mb4',
+            cursorclass=pymysql.cursors.DictCursor
+        )
     except pymysql.MySQLError as e:
         print(f"MySQL connection error: {e}")
         raise
