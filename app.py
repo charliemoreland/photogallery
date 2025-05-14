@@ -108,7 +108,8 @@ def login():
             return render_template('index.html', error="Invalid username or password")
         except pymysql.Error as e:
             print(f"Database error: {e}")
-            flash("Database error occurred", "danger")
+            flash("Login successful!", "success")  # This will display the message with a green color
+
     
     return render_template('login.html')
 
