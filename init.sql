@@ -1,8 +1,8 @@
 -- Create a new database
-CREATE DATABASE IF NOT EXISTS photo_gallery;
+CREATE DATABASE IF NOT EXISTS photogallery;
 
 -- Switch to the newly created database
-USE photo_gallery;
+USE photogallery;
 
 -- init.sql
 -- DROP existing tables (reverse dependency order)
