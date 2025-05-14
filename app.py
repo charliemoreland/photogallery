@@ -64,10 +64,10 @@ def db_debug():
         conn.close()
         return f"""
             <h1>Database Connection Successful</h1>
-            <p>MySQL Version: {version['VERSION()']}</p>
+            <p>MySQL Version: {version}</p>
             <p>Tables in {DB_NAME}:</p>
             <ul>
-                {"".join(f"<li>{table['Tables_in_photo_gallery']}</li>" for table in tables)}
+                {"".join(f"<li>{table[0]}</li>" for table in tables)}  <!-- Adjust tuple index -->
             </ul>
         """
     except Exception as e:
