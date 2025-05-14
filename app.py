@@ -1,17 +1,24 @@
 from flask import Flask, render_template, request, redirect, session, url_for, abort, flash
 import pymysql
 import os
+import argparse
 from datetime import datetime
 
 app = Flask(__name__, static_url_path='/static', static_folder='static')
 app.secret_key = 'your-secret-key-here'  # Required for session management
+
+
+# Parse the command-line arguments
+parser = argparse.ArgumentParser(description="Connect to the database.")
+parser.add_argument('--db_host', type=str, required=True, help="Database host")
+args = parser.parse_args()
 
 # Google Cloud SQL configuration
 DB_USER = "galleryuser"
 DB_PASSWORD = "root"
 DB_NAME = "photogallery"
 DB_CONNECTION_NAME = "finalexam-459723:us-central1:mysql-db"
-DB_HOST              = os.environ.get("DB_HOST", "<PUBLIC_IP>")
+DB_HOST = args.db_host  # Use the value passed from the command-line argument
 
 # Sections & Categories
 SECTIONS = {
